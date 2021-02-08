@@ -1,0 +1,36 @@
+{% extends 'base-meteo.html.twig' %}
+
+{% block title %}Hello MeteoController!{% endblock %}
+
+{% block body %}
+
+        <h1 class="selection">Votre selection météo</h1>
+        <div class="liste">
+        <a href="{{ path('home') }}">
+            <button type="button" class="btn btn-outline-secondary">Accueil</button>
+        </a>
+        </div>
+        <section id="section">
+            {% for meteos in meteo %}
+                <div class="card-deck">
+                    <div class="card mb-4">
+                        <img class="card-img-top img-fluid icons" src="{{ meteos.weather_icons }}" alt="image">
+                        <div class="card-body">
+                            <h4 class="card-title ville">{{ meteos.name }}   {{ meteos.temperature }}°C</h4>
+                            <p class="card-text temperature">
+                                {{ meteos.weather_descriptions }}
+                                </p>
+                            <p class="card-text humidity">Taux d'humidité: {{ meteos.humidity }}</p>
+                            <form method="post" action="{{ path('meteo-delete', {'id': meteos.id}) }}" onsubmit="return confirm('Voulez etes sûr de supprimer la météo de cette ville?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meteos.id) }}">
+                                <button class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+{#                            <a href="{{ path('detail-meteo', {'name': meteos.name}) }}" class="btn btn-outline-secondary">Afficher</a>#}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+{% endblock %}
+
